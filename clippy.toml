@@ -1,0 +1,2 @@
+# The port's name, in docs without backticks.
+doc-valid-idents = ["VacationDestination", ".."]

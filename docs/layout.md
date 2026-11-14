@@ -269,7 +269,7 @@ them up and left of a centred main screen: the tutorial's on 1280×1024
 has the main screen at 80, 61, the background showing below and right
 of it.
 
-In the port (`holiday::windows`, `game::savegame::Windows`):
+In the port (`vacationdestination::windows`, `game::savegame::Windows`):
 `Game::load_windows` does the above for the view's forms, from the file's
 windows among the view's fields (`MapView::unported`), on the screen the
 game lays out for. The file menu's load runs it in `Game::show` before
@@ -378,9 +378,9 @@ original.
 
 ### In the port
 
-`holiday::stacking::Stack` keeps the order of the game's windows (the
+`vacationdestination::stacking::Stack` keeps the order of the game's windows (the
 background, the main screen, the build menu, the auction, the file menu
-and the forms of `holiday::forms`). Every repaint and mouse event first
+and the forms of `vacationdestination::forms`). Every repaint and mouse event first
 tells it which are shown (`Game::sync_stack`): a form that opened since
 goes on top. The windows are painted in its order (`Game::paint`), and a
 mouse event that no window holds goes to the top window under the
@@ -543,7 +543,7 @@ overview map's clicks centre on the same squares as in the original.
   the new bars' ends too until the next scroll, so a resize never moves
   what the world sees.
 
-The tests (`crates/holiday/src/main.rs`): `big_map` (1024×768 and
+The tests (`crates/vacationdestination/src/main.rs`): `big_map` (1024×768 and
 1280×1024, on and off: the layout, the core pixel for pixel and square
 for square in each rotation, the overview's frame, the scroll bars'
 ends; with `HOLIDAY_PNG` set to a directory it writes
@@ -605,14 +605,14 @@ The platform (`crates/platform`) has a resizable window:
   pixels), `--fullscreen` / `--windowed`, `--ui-scale=N`. Without a size
   the window opens at the remembered one, else at 800×600 desktop pixels.
 - **Settings file**: `settings.ini` in the config directory
-  (`$XDG_CONFIG_HOME/holiday-island`, `~/.config/holiday-island`;
-  `~/Library/Preferences/Holiday Island`; `%APPDATA%\Holiday Island`),
+  (`$XDG_CONFIG_HOME/vacationdestination`, `~/.config/vacationdestination`;
+  `~/Library/Preferences/VacationDestination`; `%APPDATA%\VacationDestination`),
   `platform::settings::WindowSettings`. It remembers the windowed size
   (logical pixels), the position (where the window system reports one,
   not on Wayland) and whether the window was fullscreen, and is written
   when the game ends. The original reads nothing like it.
 
-The game (`crates/holiday`, `Holiday::layout`) then does what state 110
+The game (`crates/vacationdestination`, `VacationDestination::layout`) then does what state 110
 does: the framebuffer and `THintergrund` get the desktop's size,
 `hintergrund::screen_size` picks the screen size the forms are placed
 for, `backgroundimage` gets that size and its picture, and `FilmPanel` is
@@ -621,7 +621,7 @@ centred on the desktop.
 ### Live resizing (port extension)
 
 The original lays out once. When the port's window changes size during
-the game, `Holiday::layout` runs again, which:
+the game, `VacationDestination::layout` runs again, which:
 
 - picks the screen size and the pictures again (state 110, 430/450);
 - centres a film that's playing in `FilmPanel` again;
@@ -643,7 +643,7 @@ island. With `big_map` the main screen fills the new size instead
 ([above](#big_map-enhancement)). A form pushed against an edge by a smaller window stays there when
 the window grows again.
 
-The tests (`crates/holiday/src/main.rs`): `layouts` draws the main screen
+The tests (`crates/vacationdestination/src/main.rs`): `layouts` draws the main screen
 with the TV, money menu, overview map and compass at 640×480, 800×600,
 1024×768 and 1366×700 (`layout-*.ppm` with `HOLIDAY_PPM`);
 `small_and_snapped_desktops`; `resize_mid_game` (the world, scroll

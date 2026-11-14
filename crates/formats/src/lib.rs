@@ -1,4 +1,4 @@
-//! Pure parsers for Holiday Island's data files. No I/O: every parser takes the
+//! Pure parsers for the original game's data files. No I/O: every parser takes the
 //! file's bytes.
 
 pub mod avi;

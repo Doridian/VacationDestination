@@ -1,11 +1,11 @@
-# Holiday Island
+# VacationDestination
 
-A decompilation and native port of **Holiday Island** (Sunflowers, 1996) to
-Rust, for Linux, Windows, macOS and WebAssembly.
+VacationDestination is a decompilation and native port of **Holiday Island**
+(Sunflowers, 1996) to Rust, for Linux, Windows, macOS and WebAssembly.
 
-**Play it in your browser:** <https://doridian.github.io/HolidayIsland/> (the page
+**Play it in your browser:** <https://doridian.github.io/VacationDestination/> (the page
 asks for the CD image, [docs/web.md](docs/web.md)), or download it for Linux,
-Windows or macOS from the [releases](https://github.com/Doridian/HolidayIsland/releases)
+Windows or macOS from the [releases](https://github.com/Doridian/VacationDestination/releases)
 ([Packages](#packages)).
 
 Status: **playable.** The whole game is ported: the start menu, a
@@ -93,12 +93,12 @@ folder's ([docs/language.md](docs/language.md)).
 Every push builds the port as one file per platform
 (`.github/workflows/build.yml`); a `v*` tag publishes them on its release:
 
-- `holiday-island-x86_64.AppImage`, `holiday-island-aarch64.AppImage` (built
+- `vacationdestination-x86_64.AppImage`, `vacationdestination-aarch64.AppImage` (built
   on Ubuntu 22.04: they run with its glibc, 2.35, or newer)
-- `holiday-island-windows-x86_64.exe` (the C runtime linked in)
-- `holiday-island-macos.dmg`: `Holiday Island.app`, for Apple silicon and
+- `vacationdestination-windows-x86_64.exe` (the C runtime linked in)
+- `vacationdestination-macos.dmg`: `VacationDestination.app`, for Apple silicon and
   Intel (signed ad hoc only: the first start needs a right click, Open)
-- `holiday-island-web.zip`: the browser build, as on the Pages site
+- `vacationdestination-web.zip`: the browser build, as on the Pages site
 
 None of them carries game data. Started without the game's folder (from
 its icon) and with no `orig` in the working directory, the port asks for
@@ -107,8 +107,10 @@ the game with the system's file dialog: the CD image (`.iso`, `.bin`) or
 release's). If the music has no SoundFont yet ([Music](#music)), it then
 asks for one too, which it copies to its data directory; cancelled, the
 music is silent. It keeps the game's path in its data directory
-(`game-path.txt` in `~/.local/share/holiday-island`,
-`%APPDATA%\Holiday Island`, `~/Library/Application Support/Holiday Island`)
+(`game-path.txt` in `~/.local/share/vacationdestination`,
+`%APPDATA%\VacationDestination`, `~/Library/Application Support/VacationDestination`;
+the folders of earlier versions, named `holiday-island` or `Holiday Island`,
+move there on the first start)
 and doesn't ask again while it's there; deleting the file asks again. On
 Linux the dialog is the desktop's (xdg-desktop-portal, else zenity);
 where there is neither (a minimal system, a sandbox), a window of the
@@ -119,7 +121,7 @@ The icon is the port's own (`tools/make-icon.py`).
 ## Running
 
 ```sh
-cargo run --release -p holiday -- orig
+cargo run --release -p vacationdestination -- orig
 ```
 
 The argument is the directory with the game's files (`HOLIDAY.EXE`,
@@ -150,13 +152,13 @@ or all off for the original; the list saves them in the port's
 ### Multiplayer
 
 Humans take the seats the original gives to computer opponents; two or
-more can play the same seat. A signaling server (`holiday-server`,
+more can play the same seat. A signaling server (`vacationdestination-server`,
 `cargo run --release -p server`) introduces the players, who then talk
 directly over WebRTC:
 
 ```sh
-holiday --host=island --signal=ws://server:3536 orig  # the host picks the game on the start menu
-holiday --join=island --signal=ws://server:3536 orig  # each other player
+vacationdestination --host=island --signal=ws://server:3536 orig  # the host picks the game on the start menu
+vacationdestination --join=island --signal=ws://server:3536 orig  # each other player
 ```
 
 The browser build joins the same games. German and English players can
@@ -169,7 +171,7 @@ the game doesn't ship. `tools/get-soundfont.sh` downloads
 [GeneralUser GS](https://github.com/mrbumpy409/GeneralUser-GS) by
 S. Christian Collins (GS-compatible, like the Roland Sound Canvas the music
 was written on) into the port's data directory, where the game finds it.
-`--soundfont=FILE.sf2` or `HOLIDAY_SOUNDFONT` pick another; without one the
+`--soundfont=FILE.sf2` or `VACATIONDESTINATION_SOUNDFONT` pick another; without one the
 music is silent. `--sound=hi|lo|off` picks the effects' quality and
 `--no-audio` turns all sound off. Details in [docs/sound.md](docs/sound.md).
 
@@ -239,8 +241,8 @@ The game:
 
 ## Legal
 
-Holiday Island is © Sunflowers Interactive Entertainment Software. This
-project is not affiliated with or endorsed by Sunflowers, Bomico or Ubisoft.
+Holiday Island is © Sunflowers Interactive Entertainment Software.
+VacationDestination is not affiliated with or endorsed by Sunflowers, Bomico or Ubisoft.
 It's intended for owners of the original game, for preservation and
 interoperability.
 

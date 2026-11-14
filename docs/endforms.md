@@ -177,7 +177,7 @@ Step 3 of `AnimationsTimer` (1020:1e9b), with the tooltips option
 
 So when the mouse is over several, the last one wins. The port's main
 screen clock asks the three in that order (`Game::tooltips` in the
-`holiday` binary): `Geldmenuform::tooltip`, `Uebersichtsmap::help_text_at`
+`vacationdestination` binary): `Geldmenuform::tooltip`, `Uebersichtsmap::help_text_at`
 and `helpform::button_bar_tooltip`, with the form's focus for "active"
 (the build menu and the sabotage window take it from the main screen).
 
@@ -225,7 +225,7 @@ these dialogs; see [original-bugs.md](original-bugs.md#design-issues-for-multipl
 With more than one human client (decision 8 in
 [port-architecture.md](port-architecture.md#decided)) the quit question,
 the end form and the high scores stop nothing: the view keeps ticking
-(`Game::clock_stopped` in the `holiday` binary), and the world goes on
+(`Game::clock_stopped` in the `vacationdestination` binary), and the world goes on
 after the end of a game. A client's "OK" is their leaving
 (`SeatChange::Leave`): a computer plays their seat once its last client
 has gone. Each view shows its seat's results

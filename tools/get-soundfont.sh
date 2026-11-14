@@ -16,9 +16,9 @@ SHA256=9575028c7a1f589f5770fccc8cff2734566af40cd26ed836944e9a5152688cfe
 if [ $# -ge 1 ]; then
 	DIR=$1
 elif [ "$(uname -s)" = Darwin ]; then
-	DIR="$HOME/Library/Application Support/Holiday Island/soundfont"
+	DIR="$HOME/Library/Application Support/VacationDestination/soundfont"
 else
-	DIR="${XDG_DATA_HOME:-$HOME/.local/share}/holiday-island/soundfont"
+	DIR="${XDG_DATA_HOME:-$HOME/.local/share}/vacationdestination/soundfont"
 fi
 
 fetch() { # url file

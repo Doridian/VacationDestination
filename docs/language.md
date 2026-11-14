@@ -194,7 +194,7 @@ can have their own, and the world's text comes with the world.
 
 ### Screens
 
-`language_screens` (crates/holiday) renders the start menu's scenario
+`language_screens` (crates/vacationdestination) renders the start menu's scenario
 page, the main screen with the TV's message, the money menu and the
 overview map, the info bar alone, an auction, the options, the list of
 enhancements and a message box, on each folder in its own language and

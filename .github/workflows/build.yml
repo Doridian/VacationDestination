@@ -54,29 +54,29 @@ jobs:
           sudo apt-get install -y libasound2-dev pkg-config file
 
       - name: Build
-        run: cargo build --release --locked -p holiday
+        run: cargo build --release --locked -p vacationdestination
 
       - name: Package (AppImage)
         timeout-minutes: 10
         run: |
-          out=holiday-island-${{ matrix.arch }}.AppImage
+          out=vacationdestination-${{ matrix.arch }}.AppImage
           curl -sSLfo linuxdeploy https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-${{ matrix.arch }}.AppImage
           chmod +x linuxdeploy
-          doc=AppDir/usr/share/doc/holiday-island
+          doc=AppDir/usr/share/doc/vacationdestination
           mkdir -p $doc
           cp LICENSE README.md $doc/
-          cp crates/holiday/res/icon.png holiday-island.png
+          cp crates/vacationdestination/res/icon.png vacationdestination.png
           # the window, the GPU and the sound are the host's (dlopen'd, or
           # linuxdeploy's excludelist: libasound, libGL, libvulkan)
-          LDAI_OUTPUT=$out ./linuxdeploy --appdir AppDir -e target/release/holiday \
-              -d crates/holiday/res/holiday-island.desktop -i holiday-island.png --output appimage
+          LDAI_OUTPUT=$out ./linuxdeploy --appdir AppDir -e target/release/vacationdestination \
+              -d crates/vacationdestination/res/vacationdestination.desktop -i vacationdestination.png --output appimage
           # (it starts: the libraries are all there)
           { ./$out --help 2>&1 || true; } | grep "usage:"
 
       - uses: actions/upload-artifact@v7
         with:
-          name: holiday-island-${{ matrix.arch }}.AppImage
-          path: holiday-island-${{ matrix.arch }}.AppImage
+          name: vacationdestination-${{ matrix.arch }}.AppImage
+          path: vacationdestination-${{ matrix.arch }}.AppImage
 
   windows:
     runs-on: windows-latest
@@ -94,18 +94,18 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: Build
-        run: cargo build --release --locked -p holiday
+        run: cargo build --release --locked -p vacationdestination
 
       - name: Package
         run: |
-          cp target/release/holiday.exe holiday-island-windows-x86_64.exe
+          cp target/release/vacationdestination.exe vacationdestination-windows-x86_64.exe
           # (it starts)
-          { ./holiday-island-windows-x86_64.exe --help 2>&1 || true; } | grep "usage:"
+          { ./vacationdestination-windows-x86_64.exe --help 2>&1 || true; } | grep "usage:"
 
       - uses: actions/upload-artifact@v7
         with:
-          name: holiday-island-windows-x86_64
-          path: holiday-island-windows-x86_64.exe
+          name: vacationdestination-windows-x86_64
+          path: vacationdestination-windows-x86_64.exe
 
   macos:
     runs-on: macos-26
@@ -122,46 +122,46 @@ jobs:
 
       - name: Build (arm64 and x86-64)
         run: |
-          cargo build --release --locked -p holiday --target aarch64-apple-darwin
-          cargo build --release --locked -p holiday --target x86_64-apple-darwin
+          cargo build --release --locked -p vacationdestination --target aarch64-apple-darwin
+          cargo build --release --locked -p vacationdestination --target x86_64-apple-darwin
 
       - name: Package (app in a dmg)
         timeout-minutes: 10
         run: |
-          app="dmg/Holiday Island.app"
+          app="dmg/VacationDestination.app"
           c="$app/Contents"
           mkdir -p "$c/MacOS" "$c/Resources"
-          lipo -create -output "$c/MacOS/holiday" \
-              target/aarch64-apple-darwin/release/holiday target/x86_64-apple-darwin/release/holiday
+          lipo -create -output "$c/MacOS/vacationdestination" \
+              target/aarch64-apple-darwin/release/vacationdestination target/x86_64-apple-darwin/release/vacationdestination
           v=0.0.0
           case "$GITHUB_REF" in refs/tags/v*) v=${GITHUB_REF_NAME#v} ;; esac
-          sed "s/@VERSION@/$v/" crates/holiday/res/Info.plist > "$c/Info.plist"
-          # the icon, from crates/holiday/res/icon.png
-          mkdir holiday-island.iconset
+          sed "s/@VERSION@/$v/" crates/vacationdestination/res/Info.plist > "$c/Info.plist"
+          # the icon, from crates/vacationdestination/res/icon.png
+          mkdir vacationdestination.iconset
           for n in 16 32 128 256 512; do
-              sips -z $n $n crates/holiday/res/icon.png --out holiday-island.iconset/icon_${n}x${n}.png > /dev/null
+              sips -z $n $n crates/vacationdestination/res/icon.png --out vacationdestination.iconset/icon_${n}x${n}.png > /dev/null
               if [ $n -le 256 ]; then
-                  sips -z $((n * 2)) $((n * 2)) crates/holiday/res/icon.png --out holiday-island.iconset/icon_${n}x${n}@2x.png > /dev/null
+                  sips -z $((n * 2)) $((n * 2)) crates/vacationdestination/res/icon.png --out vacationdestination.iconset/icon_${n}x${n}@2x.png > /dev/null
               fi
           done
-          iconutil -c icns holiday-island.iconset -o "$c/Resources/holiday-island.icns"
+          iconutil -c icns vacationdestination.iconset -o "$c/Resources/vacationdestination.icns"
           cp LICENSE README.md "$c/Resources/"
-          otool -L "$c/MacOS/holiday"
-          lipo -info "$c/MacOS/holiday"
+          otool -L "$c/MacOS/vacationdestination"
+          lipo -info "$c/MacOS/vacationdestination"
           codesign --force --deep -s - "$app"
           # (it starts)
-          { "$c/MacOS/holiday" --help 2>&1 || true; } | grep "usage:"
+          { "$c/MacOS/vacationdestination" --help 2>&1 || true; } | grep "usage:"
           ln -s /Applications dmg/Applications
-          hdiutil create -volname "Holiday Island" -srcfolder dmg -ov -format UDZO holiday-island-macos.dmg
+          hdiutil create -volname "VacationDestination" -srcfolder dmg -ov -format UDZO vacationdestination-macos.dmg
 
       - uses: actions/upload-artifact@v7
         with:
-          name: holiday-island-macos
-          path: holiday-island-macos.dmg
+          name: vacationdestination-macos
+          path: vacationdestination-macos.dmg
 
   # The browser build (docs/web.md), without game data: the page asks the
-  # player for their CD image. crates/holiday/web/front.html is the front
-  # page, holiday.html the game next to it.
+  # player for their CD image. crates/vacationdestination/web/front.html is the front
+  # page, vacationdestination.html the game next to it.
   web:
     runs-on: ubuntu-26.04
     steps:
@@ -175,7 +175,7 @@ jobs:
 
       - name: The wasm-bindgen version the crates pin
         id: bindgen
-        run: echo "version=$(sed -n 's/^wasm-bindgen = "=\(.*\)"$/\1/p' crates/holiday/Cargo.toml)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(sed -n 's/^wasm-bindgen = "=\(.*\)"$/\1/p' crates/vacationdestination/Cargo.toml)" >> "$GITHUB_OUTPUT"
 
       - uses: taiki-e/install-action@v2
         with:
@@ -191,18 +191,18 @@ jobs:
             echo "unexpected files in the build"; exit 1
           fi
           mkdir _site
-          cp -r web/holiday.js web/holiday_bg.wasm web/snippets _site/
-          cp web/index.html _site/holiday.html
-          cp crates/holiday/web/front.html _site/index.html
-          d=holiday-island-web
+          cp -r web/vacationdestination.js web/vacationdestination_bg.wasm web/snippets _site/
+          cp web/index.html _site/vacationdestination.html
+          cp crates/vacationdestination/web/front.html _site/index.html
+          d=vacationdestination-web
           cp -r _site $d
           cp LICENSE README.md $d/
           zip -r $d.zip $d
 
       - uses: actions/upload-artifact@v7
         with:
-          name: holiday-island-web
-          path: holiday-island-web.zip
+          name: vacationdestination-web
+          path: vacationdestination-web.zip
 
       - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v6

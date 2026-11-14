@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=VacationDestination
+Comment=A port of Holiday Island (needs the original game's CD image)
+Exec=vacationdestination %f
+Icon=vacationdestination
+Categories=Game;Simulation;
+Terminal=false

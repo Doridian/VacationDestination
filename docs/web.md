@@ -10,7 +10,7 @@ files and the clock differ ([port-architecture.md](port-architecture.md#stack)).
 
 Needs the `wasm32-unknown-unknown` target and the `wasm-bindgen` CLI in
 the version the crates pin (`wasm-bindgen = "=0.2.129"` in
-`crates/holiday/Cargo.toml` and `crates/platform/Cargo.toml`; the CLI
+`crates/vacationdestination/Cargo.toml` and `crates/platform/Cargo.toml`; the CLI
 refuses a module from another version):
 
 ```sh
@@ -20,11 +20,11 @@ tools/build-web.sh            # release build into web/
 tools/build-web.sh --debug    # quicker to build, slow to play
 ```
 
-The script runs `cargo build -p holiday --target wasm32-unknown-unknown`
+The script runs `cargo build -p vacationdestination --target wasm32-unknown-unknown`
 and `wasm-bindgen --target web`, and copies the page
-(`crates/holiday/web/index.html`) next to the output: `web/` holds
-`index.html`, `holiday.js`, `holiday_bg.wasm` and `snippets/` (the
-storage code, `crates/holiday/src/web.js`). `web/` is ignored by git.
+(`crates/vacationdestination/web/index.html`) next to the output: `web/` holds
+`index.html`, `vacationdestination.js`, `vacationdestination_bg.wasm` and `snippets/` (the
+storage code, `crates/vacationdestination/src/web.js`). `web/` is ignored by git.
 There's no Trunk setup; the script is all it takes.
 
 Upgrading wasm-bindgen means changing the pin in both crates and
@@ -33,11 +33,11 @@ installing the matching CLI.
 ## GitHub Pages
 
 `.github/workflows/build.yml` publishes the build on every push to
-`main` at <https://doridian.github.io/HolidayIsland/>, without game data
+`main` at <https://doridian.github.io/VacationDestination/>, without game data
 (the workflow fails if anything but the page, the glue and the module is
-in the build). `crates/holiday/web/front.html` is the site's front page:
+in the build). `crates/vacationdestination/web/front.html` is the site's front page:
 where to get the CD image and a SoundFont, and links to the game,
-`holiday.html` (the build's `index.html`), with `?lang=en` or `?lang=de`.
+`vacationdestination.html` (the build's `index.html`), with `?lang=en` or `?lang=de`.
 The workflow installs the wasm-bindgen CLI in the version the crates
 pin.
 
@@ -71,7 +71,7 @@ the German speech).
 ## Options
 
 The page's query string takes the command line's options without their
-`--` (`docs/networking.md`, `holiday --help`): `?lang=en`,
+`--` (`docs/networking.md`, `vacationdestination --help`): `?lang=en`,
 `?original`, `?sound=lo`, `?films=lo`, `?ui-scale=2`,
 `?enhance=big_map=off`, and the network game's below. A key without a
 value is a switch (`?original`). Options that name files or the window's
@@ -85,8 +85,8 @@ What the game would print on the terminal goes to the browser's console
 As natively ([networking.md](networking.md#the-browser-build)):
 
 ```
-http://localhost:8000/?host=island&signal=wss://example.org/holiday
-http://localhost:8000/?join=island&signal=wss://example.org/holiday&stun=stun:example.org:3478
+http://localhost:8000/?host=island&signal=wss://example.org/vacationdestination
+http://localhost:8000/?join=island&signal=wss://example.org/vacationdestination&stun=stun:example.org:3478
 ```
 
 `stun=` and `turn=` may repeat; `turn-user=` and `turn-password=` go
@@ -107,7 +107,9 @@ as natively ([networking.md](networking.md#the-protocol)).
 ## Storage
 
 Everything is kept in the browser's **IndexedDB**, database
-`holiday-island`, for the page's origin:
+`vacationdestination`, for the page's origin (a database `holiday-island`,
+the name before the port was VacationDestination, moves into it the first
+time the page opens it):
 
 | Store | Key | What |
 |---|---|---|
@@ -146,7 +148,7 @@ in and out as files:
   film or another message box waits until they're over; a file that
   isn't a saved game gets an error. The page reads the file
   (`web.js`'s `watchDrops`) and the game takes it the next frame
-  (`Holiday::take_dropped`). The native build does the same with files
+  (`VacationDestination::take_dropped`). The native build does the same with files
   dropped onto its window (winit's `DroppedFile`).
 - **Download** in the file menu, a button of the port's own in the gap
   below "Beenden" (`Dateimenue::with_download`), saves the game under the

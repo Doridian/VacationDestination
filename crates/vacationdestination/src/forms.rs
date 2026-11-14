@@ -92,7 +92,7 @@ pub(crate) enum Grab {
     Enhance,
 }
 
-/// What the caller (`Holiday`) does after an event, because it needs more
+/// What the caller (`VacationDestination`) does after an event, because it needs more
 /// than the game: the saves, the start menu.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Request {
@@ -141,7 +141,7 @@ pub(crate) struct Forms {
     pub credits: Creditform,
     credits_form: Form,
     pub enhance: Enhanceform,
-    /// What the list of enhancements says about saving (`Holiday`'s).
+    /// What the list of enhancements says about saving (`VacationDestination`'s).
     pub enhance_notes: enhanceform::Notes,
     pub(crate) help: Helpform,
     help_form: Form,

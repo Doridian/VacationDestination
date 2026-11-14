@@ -23,7 +23,11 @@ fn start_server() -> SocketAddr {
 
 /// Both programs' frames until `done`, 100 ms of the game's time each,
 /// for at most 30 s.
-fn frames(host: &mut Holiday, client: &mut Holiday, done: impl Fn(&Holiday, &Holiday) -> bool) {
+fn frames(
+    host: &mut VacationDestination,
+    client: &mut VacationDestination,
+    done: impl Fn(&VacationDestination, &VacationDestination) -> bool,
+) {
     let start = Instant::now();
     while !done(host, client) {
         assert!(start.elapsed() < Duration::from_secs(30), "took too long");
@@ -37,7 +41,7 @@ fn frames(host: &mut Holiday, client: &mut Holiday, done: impl Fn(&Holiday, &Hol
     }
 }
 
-fn tick_of(h: &Holiday) -> Option<u64> {
+fn tick_of(h: &VacationDestination) -> Option<u64> {
     h.game.as_ref()?.net.as_ref()?.session.tick()
 }
 
@@ -54,7 +58,7 @@ fn a_client_joins_the_hosts_game() {
     };
 
     // The host starts a game from the start menu, and hosts it.
-    let mut host = fixed_holiday(&dir);
+    let mut host = fixed_destination(&dir);
     host.net_args = Some(args(network::Role::Host));
     host.respond(startform::Response {
         action: Some(Action::Start { scenario: false }),
@@ -64,7 +68,7 @@ fn a_client_joins_the_hosts_game() {
     host.finish_loading();
     assert!(host.game.as_ref().unwrap().net.is_some(), "the host's game is hosted");
     // The client waits for the host's world and joins with it.
-    let mut client = fixed_holiday(&dir);
+    let mut client = fixed_destination(&dir);
     client.joining = Some(args(network::Role::Join).connect().unwrap());
     // It says so in a message box until the world comes.
     client.show_join_waiting();

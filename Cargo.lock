@@ -1609,27 +1609,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "holiday"
-version = "0.1.0"
-dependencies = [
- "formats",
- "game",
- "js-sys",
- "log",
- "net",
- "platform",
- "rfd",
- "server",
- "tokio",
- "vcl",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "web-time",
- "winresource",
-]
-
-[[package]]
 name = "http"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4438,6 +4417,27 @@ dependencies = [
  "js-sys",
  "serde_core",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "vacationdestination"
+version = "0.1.0"
+dependencies = [
+ "formats",
+ "game",
+ "js-sys",
+ "log",
+ "net",
+ "platform",
+ "rfd",
+ "server",
+ "tokio",
+ "vcl",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "web-time",
+ "winresource",
 ]
 
 [[package]]

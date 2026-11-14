@@ -16,22 +16,70 @@
 // waits in `dropped` until the game takes it (takeDropped), and
 // downloadFile hands one to the browser as a download.
 
-const DB = "holiday-island";
+const DB = "vacationdestination";
+// The database's name before the port was VacationDestination: a new
+// database takes over what it holds, which then goes.
+const OLD_DB = "holiday-island";
 let opened = null;
 
 function db() {
   if (!opened) {
     opened = new Promise((resolve, reject) => {
       const req = indexedDB.open(DB, 1);
+      let created = false;
       req.onupgradeneeded = () => {
+        created = true;
         req.result.createObjectStore("cd");
         req.result.createObjectStore("files");
       };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
+    }).then(async (d) => {
+      if (created) {
+        await migrate(d).catch((e) => console.error("storage: moving the old database:", e));
+      }
+      return d;
     });
   }
   return opened;
+}
+
+// Copies the stores of OLD_DB, if there is one, into `target` and
+// deletes it. Opening a database that doesn't exist creates it: that
+// upgrade is aborted, which leaves none.
+async function migrate(target) {
+  const old = await new Promise((resolve) => {
+    const req = indexedDB.open(OLD_DB);
+    req.onupgradeneeded = () => req.transaction.abort();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => resolve(null);
+  });
+  if (!old) {
+    return;
+  }
+  const names = ["cd", "files"].filter((n) => old.objectStoreNames.contains(n));
+  const entries = {};
+  if (names.length) {
+    // Every request goes out before the first await, while the
+    // transaction is active.
+    const tx = old.transaction(names, "readonly");
+    const reads = names.map((n) => {
+      const s = tx.objectStore(n);
+      return Promise.all([request(s.getAllKeys()), request(s.getAll())]);
+    });
+    (await Promise.all(reads)).forEach((r, i) => (entries[names[i]] = r));
+  }
+  old.close();
+  if (names.length) {
+    const tx = target.transaction(names, "readwrite");
+    for (const n of names) {
+      const [keys, values] = entries[n];
+      const s = tx.objectStore(n);
+      keys.forEach((k, i) => s.put(values[i], k));
+    }
+    await done(tx);
+  }
+  await request(indexedDB.deleteDatabase(OLD_DB));
 }
 
 function request(req) {

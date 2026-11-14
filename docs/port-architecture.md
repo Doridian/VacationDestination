@@ -53,13 +53,13 @@ crates/game/       the decompiled game, one module per original unit; no platfor
                    World (simulation, commands) and View (one player's UI) kept apart
 crates/platform/   winit/wgpu/cpal glue; the files (platform::fs: std::fs with mount
                    points; platform::data: the CD image, files in memory) and storage
-crates/holiday/    the binary, natively and in the browser (src/web.rs, src/web.js, the
+crates/vacationdestination/    the binary, natively and in the browser (src/web.rs, src/web.js, the
                    page in web/index.html)
 tools/build-web.sh the browser build into web/ (docs/web.md)
 crates/net/        network games: the transport trait, the WebRTC transport (matchbox),
                    an in-memory one for tests, the lockstep session, the wire format
                    (planned: a WebSocket relay transport as a fallback)
-crates/server/     holiday-server, the signaling server the peers find each other on
+crates/server/     vacationdestination-server, the signaling server the peers find each other on
 lang/<code>/       the texts of each language (TEXTE/, UPGRADE/, strings.toml), embedded
                    into crates/game (lang/README.md)
 ```
@@ -461,7 +461,7 @@ server `crates/server`, wired into the binary by command-line options
   and the sound/video quality ([startup.md](startup.md)), so a default
   `Setup` value should do.
 - Which General MIDI SoundFont to ship, if any. For now the player
-  supplies one (`--soundfont`, `HOLIDAY_SOUNDFONT` or a system one;
+  supplies one (`--soundfont`, `VACATIONDESTINATION_SOUNDFONT` or a system one;
   [sound.md](sound.md#the-music)), and without it the music is silent.
 - How much the game relies on Windows' palette manager (palette animation,
   `RealizePalette` timing), which decides how faithful the palette path must be.

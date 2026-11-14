@@ -1,13 +1,13 @@
 [package]
 name = "server"
 version = "0.1.0"
-description = "The Holiday Island port's signaling server, for network games"
+description = "VacationDestination's signaling server, for network games"
 edition.workspace = true
 license.workspace = true
 publish.workspace = true
 
 [[bin]]
-name = "holiday-server"
+name = "vacationdestination-server"
 path = "src/main.rs"
 
 [dependencies]

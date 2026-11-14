@@ -12,14 +12,14 @@ The films' sound is in [films.md](films.md). Ported in
 players' positions), [`game::fernseher`](../crates/game/src/fernseher.rs)
 (the speaker), [`platform::audio`](../crates/platform/src/audio/mod.rs)
 (the WaveMix model, the renderer, the `cpal` output, the SoundFont lookup)
-and [`holiday::sound`](../crates/holiday/src/sound.rs) (the wiring).
+and [`vacationdestination::sound`](../crates/vacationdestination/src/sound.rs) (the wiring).
 
 ## The options
 
 | Global | What | Where |
 |---|---|---|
 | `1110:0062` | The installation has sound: `SETUP.DAT`'s fifth line isn't `N` (`init_paths`, 1000:17bc). Without it nothing of WaveMix runs and the options show the sound volume as 0 | `Effects::enabled`; the binary reads `SETUP.DAT` if the game directory has one, else `--sound=hi\|lo\|off` (default `hi`) |
-| `1110:51e0` | `Sound\` or, for `L`, `SoundLo\` (22 kHz or 11 kHz files; WaveMix mixes both at 11 kHz) | `holiday::sound::Sound::new` |
+| `1110:51e0` | `Sound\` or, for `L`, `SoundLo\` (22 kHz or 11 kHz files; WaveMix mixes both at 11 kHz) | `vacationdestination::sound::Sound::new` |
 | `1110:0061` | "Geräusche": `play_sound` plays | `Settings::sounds` |
 | `1110:005b` | "Musik": the background music plays. `music_start`/`music_stop` set it; the end of a game clears it | `Settings::music` |
 | `1110:6ef2..6ef8`, `6efa` | The playlist and the track | `Settings::playlist`, `track` |
@@ -174,14 +174,14 @@ a GS SoundFont comes closest.
 `tools/get-soundfont.sh` downloads **GeneralUser GS** v2.0.3 by
 S. Christian Collins (GS-compatible, 13 drum kits; its licence allows
 redistributing it with software) and its `LICENSE.txt` into
-`${XDG_DATA_HOME:-~/.local/share}/holiday-island/soundfont/` (macOS:
-`~/Library/Application Support/Holiday Island/soundfont/`), checking its
+`${XDG_DATA_HOME:-~/.local/share}/vacationdestination/soundfont/` (macOS:
+`~/Library/Application Support/VacationDestination/soundfont/`), checking its
 size and SHA-256.
 
 The binary takes the first of:
 
 1. `--soundfont=FILE.sf2`;
-2. `HOLIDAY_SOUNDFONT`;
+2. `VACATIONDESTINATION_SOUNDFONT`;
 3. any `.sf2` in that `soundfont` directory;
 4. the system's: `/usr/share/soundfonts/default.sf2`, `FluidR3_GM.sf2`,
    `/usr/share/sounds/sf2/` (`default-GM`, `FluidR3_GM`, `TimGM6mb`), then

@@ -95,7 +95,7 @@ fn saved_windows(game: &mut Game) -> Windows {
 #[test]
 fn the_tutorials_windows_come_back() {
     let Some(dir) = game_dir() else { return };
-    let mut h = holiday_in_a_game(&dir, (800, 600), Config::ORIGINAL);
+    let mut h = destination_in_a_game(&dir, (800, 600), Config::ORIGINAL);
     let g = h.game.as_mut().unwrap();
     assert!(g.forms.tv.visible && g.forms.money.shown() && g.forms.overview.visible());
     let compass = g.forms.compass.bounds();
@@ -184,7 +184,7 @@ fn forms_saved_open() {
         } else {
             only(enhance::Enhancement::LoadedForms)
         };
-        let mut h = holiday_in_a_game(&dir, (800, 600), config);
+        let mut h = destination_in_a_game(&dir, (800, 600), config);
         let g = h.game.as_mut().unwrap();
         g.forms.umenu.open(&g.world, &g.font, &g.info, g.size);
         load_from_the_file_menu(g, map.clone());
@@ -237,7 +237,7 @@ fn the_tv_pause_after_a_load() {
         assert_eq!(g.world.date == date, !fixed);
         assert_eq!(g.tools.down[3], !fixed);
 
-        let mut h = holiday_in_a_game(&dir, (800, 600), config);
+        let mut h = destination_in_a_game(&dir, (800, 600), config);
         let g = h.game.as_mut().unwrap();
         let r = g.forms.tv.close();
         g.tv_response(r);

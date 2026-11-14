@@ -23,7 +23,7 @@ pub use rustysynth::MidiFile;
 use rustysynth::SoundFont;
 
 /// The environment variable that names a `SoundFont` (`.sf2`) for the music.
-pub const SOUNDFONT_ENV: &str = "HOLIDAY_SOUNDFONT";
+pub const SOUNDFONT_ENV: &str = "VACATIONDESTINATION_SOUNDFONT";
 
 /// Where `SoundFont`s usually are, the GM ones first.
 const SOUNDFONT_FILES: [&str; 6] = [
@@ -376,7 +376,7 @@ mod tests {
         assert_eq!(n, 11);
     }
 
-    /// With a `SoundFont` (`HOLIDAY_SOUNDFONT` or a system one) and the
+    /// With a `SoundFont` (`VACATIONDESTINATION_SOUNDFONT` or a system one) and the
     /// game's files, `holiday.mid` renders the same twice and isn't silent.
     #[test]
     fn renders_midi_deterministically() {

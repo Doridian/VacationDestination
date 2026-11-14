@@ -20,7 +20,7 @@ fn find_in<T>(area: Rect, f: impl Fn(i32, i32) -> Option<T>) -> Option<((i32, i3
 fn form_tooltips() {
     let Some(dir) = game_dir() else { return };
     // On 1280 × 1024 the main screen leaves the forms at the edges free.
-    let mut h = holiday_in_a_game(&dir, (1280, 1024), Config::ORIGINAL);
+    let mut h = destination_in_a_game(&dir, (1280, 1024), Config::ORIGINAL);
     let g = h.game.as_mut().unwrap();
     let r = g.forms.tv.close();
     g.tv_response(r);
@@ -81,7 +81,7 @@ fn form_tooltips() {
 #[test]
 fn the_earthquake_shakes_the_screen() {
     let Some(dir) = game_dir() else { return };
-    let mut h = holiday_in_a_game(&dir, (800, 600), Config::ORIGINAL);
+    let mut h = destination_in_a_game(&dir, (800, 600), Config::ORIGINAL);
     let g = h.game.as_mut().unwrap();
     // The money menu and the overview out of the way of the picture.
     g.click_button(4);
@@ -134,7 +134,7 @@ fn quake_screen_after_a_load() {
         } else {
             Config::ORIGINAL
         };
-        let mut h = holiday_in_a_game(&dir, (800, 600), config);
+        let mut h = destination_in_a_game(&dir, (800, 600), config);
         let g = h.game.as_mut().unwrap();
         let home = (g.screen.left, g.screen.top);
         g.world.earthquake = true;
@@ -164,7 +164,7 @@ fn the_tv_dates_in_the_players_language() {
         language: Setting::Is(Language::En),
         ..Config::ORIGINAL
     };
-    let mut h = holiday_in_a_game(&dir, (800, 600), config);
+    let mut h = destination_in_a_game(&dir, (800, 600), config);
     let g = h.game.as_mut().unwrap();
     assert_eq!((g.world.language, g.info.language), (Language::En, Language::En));
     let n = g.forms.tv.cursor;
@@ -201,7 +201,7 @@ fn the_tv_dates_in_the_players_language() {
 fn the_gauge_moves_with_the_work() {
     let Some(dir) = game_dir() else { return };
     for scenario in [false, true] {
-        let mut h = fixed_holiday(&dir);
+        let mut h = fixed_destination(&dir);
         if scenario {
             h.start.menu = start_menu(
                 &dir,
@@ -268,7 +268,7 @@ fn the_end_forms_timer_fires_once_a_second() {
     if !dir.join("FILMHI").exists() {
         return;
     }
-    let mut h = holiday_in_a_game(&dir, (800, 600), Config::ORIGINAL);
+    let mut h = destination_in_a_game(&dir, (800, 600), Config::ORIGINAL);
     let g = h.game.as_mut().unwrap();
     let r = g.forms.schluss.open_quit(g.size);
     g.schluss_response(r);

@@ -58,7 +58,7 @@ Built in [`game::enhance`](../crates/game/src/enhance.rs):
   [people.md](people.md#who-is-whose-fixview_people)) and the fixes keyed in
   "UI quirks" and "Sound" below. Each form keeps the player's set in its
   `enhance` field (`Game::set_view_enhancements` hands it out; the start
-  menu, the load form and the sound get it from `Holiday`), and the
+  menu, the load form and the sound get it from `VacationDestination`), and the
   code branches on it where the quirk is. Some of them change what the
   player's view tells the world, as any input does, never how the world
   reacts: `road_drag` (where `Action::RoadDragEnd` ends), `tv_form` and

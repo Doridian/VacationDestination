@@ -1,7 +1,7 @@
 [package]
-name = "holiday"
+name = "vacationdestination"
 version = "0.1.0"
-description = "Holiday Island"
+description = "VacationDestination"
 edition.workspace = true
 license.workspace = true
 publish.workspace = true

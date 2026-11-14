@@ -12,7 +12,7 @@ new game's world comes from the game's data, loaded in state 1220
 
 Ported in [`game::generator`](../crates/game/src/generator.rs) (the
 island) and [`game::hintergrund::new_world`](../crates/game/src/hintergrund.rs)
-(the whole world). The `holiday` binary seeds it from the clock, as
+(the whole world). The `vacationdestination` binary seeds it from the clock, as
 `Randomize` would.
 
 ## `generate_island` (10b0:52d4)

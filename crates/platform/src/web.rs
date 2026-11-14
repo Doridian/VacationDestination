@@ -32,7 +32,7 @@ pub fn element(id: &str) -> Option<web_sys::Element> {
     web_sys::window()?.document()?.get_element_by_id(id)
 }
 
-/// The page's `<canvas id="holiday">`, if it has one.
+/// The page's `<canvas id="vacationdestination">`, if it has one.
 pub(crate) fn canvas() -> Option<web_sys::HtmlCanvasElement> {
-    element("holiday")?.dyn_into().ok()
+    element("vacationdestination")?.dyn_into().ok()
 }

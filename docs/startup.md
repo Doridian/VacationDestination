@@ -90,7 +90,7 @@ another name there) from `MAPS\`, which the load form sets
 [`game::hintergrund`](../crates/game/src/hintergrund.rs): a scenario's
 world from its map file (`load_world`) and a normal game's from the
 generator and the game's data (`new_world`,
-[island-generator.md](island-generator.md)); the `holiday` binary plays
+[island-generator.md](island-generator.md)); the `vacationdestination` binary plays
 `titel.avi` ([films.md](films.md)) and shows the progress window
 ([below](#the-progress-window-twasnunform)).
 
@@ -148,7 +148,7 @@ a line of text. Its DFM gives it the cursor `crNoDrop`, which
 the file menu's work uses `crHourGlass`, -11). The DFM of
 `THintergrund` has `crNoDrop` too, but its picture covers it.
 
-The `holiday` binary sets the game up a step a frame (`loading::Setup`)
+The `vacationdestination` binary sets the game up a step a frame (`loading::Setup`)
 and shows each step's page and gauge as the original does once its work
 is done, then the main screen:
 
@@ -235,7 +235,7 @@ speech; `init_sound` sets the volumes to the system's. Not touched: the
 opponents (`1110:1478`, a scenario's or a file's) and the name
 (`last_player_name`, `1110:0a02`, the one the menu last started with).
 
-The `holiday` binary does the same: it saves `Last.map`, drops the game,
+The `vacationdestination` binary does the same: it saves `Last.map`, drops the game,
 puts back the start menu's settings (`Settings::after_game`) and the
 options (`optionen::Settings::after_game`), empties the sounds, plays
 `holiday.mid` and shows a new start menu. The world and its tables are
@@ -247,7 +247,7 @@ second game starts as the first would on a fresh start (the test
 ## The start menu: `TStartform`
 
 Ported as [`game::startform`](../crates/game/src/startform.rs); the
-`holiday` binary shows it over the background.
+`vacationdestination` binary shows it over the background.
 
 State 500 does `startform := TStartform.Create(Application)`, then
 `startform_init` (1058:27e6), activates WaveMix (`10a0:254f`) and calls

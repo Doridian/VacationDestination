@@ -93,7 +93,7 @@ fn drop_game() -> Option<PathBuf> {
          Or type its path and press Enter.",
         "(There is no file dialog here to choose it with.)",
     ];
-    platform::ask_drop("Holiday Island", &lines, take).unwrap_or_else(|e| {
+    platform::ask_drop("VacationDestination", &lines, take).unwrap_or_else(|e| {
         eprintln!("no file dialog, and no window either: {e}");
         None
     })
@@ -253,7 +253,7 @@ pub fn error_box(message: &str) {
     }
     rfd::MessageDialog::new()
         .set_level(rfd::MessageLevel::Error)
-        .set_title("Holiday Island")
+        .set_title("VacationDestination")
         .set_description(message)
         .set_buttons(rfd::MessageButtons::Ok)
         .show();

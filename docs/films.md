@@ -6,10 +6,10 @@ The cutscenes are AVIs in `FILMHI\` or `FILMLO\`, played by Delphi's
 [`formats::avi`](../crates/formats/src/avi.rs) (the demuxer),
 [`formats::cinepak`](../crates/formats/src/cinepak.rs) and
 [`formats::msadpcm`](../crates/formats/src/msadpcm.rs) (the decoders),
-[`holiday::film`](../crates/holiday/src/film.rs) (the player),
+[`vacationdestination::film`](../crates/vacationdestination/src/film.rs) (the player),
 `platform::Overlay` and `platform::audio::Engine::play_film` (the
 picture and the sound), with the games' parts in `game::fernseher`,
-`game::schlussform` and `holiday`'s `main.rs` and `forms.rs`.
+`game::schlussform` and `vacationdestination`'s `main.rs` and `forms.rs`.
 
 ## Which directory
 

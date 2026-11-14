@@ -2,7 +2,7 @@
 //! decoders' output against `FFmpeg`'s (`ffmpeg` on the `PATH`), pixel for
 //! pixel and sample for sample. Skipped without the files; the comparison
 //! is skipped without `ffmpeg`. By default it checks the first frames of
-//! a few films and their whole sound; `HOLIDAY_FILMS_ALL=1` checks every
+//! a few films and their whole sound; `VACATIONDESTINATION_FILMS_ALL=1` checks every
 //! frame of every film (slow in a debug build).
 
 use std::path::{Path, PathBuf};
@@ -102,7 +102,7 @@ fn film_formats() {
 
 #[test]
 fn decodes_as_ffmpeg_does() {
-    let all = std::env::var_os("HOLIDAY_FILMS_ALL").is_some();
+    let all = std::env::var_os("VACATIONDESTINATION_FILMS_ALL").is_some();
     let mut paths: Vec<PathBuf> = [films("FILMHI"), films("FILMLO")].concat();
     if paths.is_empty() {
         eprintln!("skipping: no films in {}", dir().display());

@@ -1,4 +1,4 @@
-//! Network multiplayer for the Holiday Island port
+//! Network multiplayer for VacationDestination
 //! (`docs/networking.md`): humans take the computers' seats of a game
 //! over the network, in deterministic lockstep, with the host's world
 //! the authority.

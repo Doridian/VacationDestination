@@ -314,7 +314,7 @@ mod tests {
 
     #[test]
     fn saving_keeps_the_other_lines() {
-        let dir = std::env::temp_dir().join(format!("holiday-settings-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("vacationdestination-settings-{}", std::process::id()));
         let path = dir.join("settings.ini");
         std::fs::create_dir_all(&dir).unwrap();
         std::fs::write(

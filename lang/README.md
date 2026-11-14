@@ -82,7 +82,7 @@ file loads with the game's loaders (`lang_data::every_file_loads`).
    and its arm in `Language::data`; say in `Language::of_land` which of
    `MODATYP.DAT`'s countries it is, if any.
 4. `cargo test --workspace`, then look at the screens (`HOLIDAY_PNG=dir
-   cargo test -p holiday language_screens` writes them).
+   cargo test -p vacationdestination language_screens` writes them).
 
 The world's text (the computers' names from `NAMEN.TXT`, the news
 archive's dates) is made in the language a game was created in and saved

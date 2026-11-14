@@ -140,7 +140,7 @@ impl Display {
         ));
         let (device, queue) = adapter
             .request_device(&wgpu::DeviceDescriptor {
-                label: Some("holiday"),
+                label: Some("vacationdestination"),
                 required_limits: wgpu::Limits::downlevel_webgl2_defaults().using_resolution(adapter.limits()),
                 ..Default::default()
             })

@@ -3,7 +3,7 @@
 //! time, each shown on the progress window (`TWasNunForm`,
 //! `game::wasnunform`) as the original shows it once its work is done
 //! (en 1010:0591, `docs/startup.md`). [`Setup::step`] does one step;
-//! `Holiday` does one a frame, so the gauge moves as the work goes.
+//! `VacationDestination` does one a frame, so the gauge moves as the work goes.
 //!
 //! | State | Step | Page | Gauge after it |
 //! |---|---|---|---|

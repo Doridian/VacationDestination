@@ -1,13 +1,13 @@
-//! `holiday-server [--listen=ADDR]`: the signaling server of the port's
+//! `vacationdestination-server [--listen=ADDR]`: the signaling server of the port's
 //! network games (`docs/networking.md`), on `0.0.0.0:3536` by default.
 //! Players point the game at it with `--signal=ws://HOST:3536`.
 
 use std::net::SocketAddr;
 
 const USAGE: &str = "\
-usage: holiday-server [--listen=ADDR]
+usage: vacationdestination-server [--listen=ADDR]
 
-The signaling server for Holiday Island's network games. Players find
+The signaling server for VacationDestination's network games. Players find
 each other here; their games then talk directly (or through TURN).
 
   --listen=ADDR   the address and port to listen on (default 0.0.0.0:3536)

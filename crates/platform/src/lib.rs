@@ -15,7 +15,7 @@
 
 //!
 //! In the browser (`wasm32`, `docs/web.md`) the window is the page's
-//! `<canvas id="holiday">`, the GPU set up asynchronously (WebGPU, else
+//! `<canvas id="vacationdestination">`, the GPU set up asynchronously (WebGPU, else
 //! WebGL2), the files come from what's mounted ([`fs`], [`data`]), and
 //! what would go to the terminal goes to the console ([`web`]).
 

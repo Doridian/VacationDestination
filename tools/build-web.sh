@@ -2,7 +2,7 @@
 # Builds the browser version (docs/web.md) into web/: the page, the
 # wasm-bindgen glue and the module. Needs the wasm32-unknown-unknown
 # target and the wasm-bindgen CLI of the version the crates pin
-# (crates/holiday/Cargo.toml):
+# (crates/vacationdestination/Cargo.toml):
 #
 #   rustup target add wasm32-unknown-unknown
 #   cargo install wasm-bindgen-cli --version 0.2.129
@@ -32,7 +32,7 @@ bindgen=${WASM_BINDGEN:-wasm-bindgen}
 if ! command -v "$bindgen" >/dev/null 2>&1 && [ -x "$HOME/.cargo/bin/wasm-bindgen" ]; then
     bindgen=$HOME/.cargo/bin/wasm-bindgen
 fi
-want=$(sed -n 's/^wasm-bindgen = "=\(.*\)"$/\1/p' "$root/crates/holiday/Cargo.toml")
+want=$(sed -n 's/^wasm-bindgen = "=\(.*\)"$/\1/p' "$root/crates/vacationdestination/Cargo.toml")
 have=$("$bindgen" --version | cut -d' ' -f2)
 if [ "$want" != "$have" ]; then
     echo "wasm-bindgen $have, but the crates need $want: cargo install wasm-bindgen-cli --version $want" >&2
@@ -41,11 +41,11 @@ fi
 
 flag=
 [ "$profile" = release ] && flag=--release
-cargo build --manifest-path "$root/Cargo.toml" -p holiday --target wasm32-unknown-unknown $flag
+cargo build --manifest-path "$root/Cargo.toml" -p vacationdestination --target wasm32-unknown-unknown $flag
 
 mkdir -p "$out"
 rm -rf "$out/snippets"
-"$bindgen" --target web --no-typescript --out-dir "$out" --out-name holiday \
-    "$root/target/wasm32-unknown-unknown/$profile/holiday.wasm"
-cp "$root/crates/holiday/web/index.html" "$out/index.html"
+"$bindgen" --target web --no-typescript --out-dir "$out" --out-name vacationdestination \
+    "$root/target/wasm32-unknown-unknown/$profile/vacationdestination.wasm"
+cp "$root/crates/vacationdestination/web/index.html" "$out/index.html"
 echo "built $out: serve it over HTTP (python3 -m http.server -d $out 8000)"

@@ -281,7 +281,7 @@ mod tests {
 
     #[test]
     fn mounted_files() {
-        let at = PathBuf::from("/holiday-fs-test-mount");
+        let at = PathBuf::from("/vacationdestination-fs-test-mount");
         mount(&at, Arc::new(MemoryFiles::new(Vec::new(), None)));
         let dir = at.join("MAPS");
         assert!(!exists(&dir));

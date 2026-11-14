@@ -175,7 +175,7 @@ zeros there.
 
 The forms' windows ([layout.md](layout.md#saved-windows)) are the
 view's: loading puts the player's forms where the file has them, and
-saving writes where they are (`savegame::Windows`, `holiday::windows`).
+saving writes where they are (`savegame::Windows`, `vacationdestination::windows`).
 The world takes one thing from them: whether the money menu is open (its
 saved height), which decides when the year's total is worked out
 (`World::money_menu_shown`, 1070:2617; a file without windows leaves it
@@ -390,10 +390,10 @@ after it.
 ## The port
 
 - Saves go to `MAPS` in the platform's data directory
-  (`platform::storage::save_dir`: `$XDG_DATA_HOME/holiday-island/MAPS` or
-  `~/.local/share/holiday-island/MAPS` on Linux,
-  `~/Library/Application Support/Holiday Island/MAPS` on macOS,
-  `%APPDATA%\Holiday Island\MAPS` on Windows), or `--save-dir=DIR`. The
+  (`platform::storage::save_dir`: `$XDG_DATA_HOME/vacationdestination/MAPS` or
+  `~/.local/share/vacationdestination/MAPS` on Linux,
+  `~/Library/Application Support/VacationDestination/MAPS` on macOS,
+  `%APPDATA%\VacationDestination\MAPS` on Windows), or `--save-dir=DIR`. The
   game's own `MAPS` is only read: the lists show both (the player's file
   wins a name both have), sorted by name as a stand-in for the
   directory's order, then backwards as the original lists them (with

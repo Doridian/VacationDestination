@@ -1,4 +1,4 @@
-//! The subset of Delphi 1's VCL that Holiday Island uses, drawn into an 8-bit
+//! The subset of Delphi 1's VCL that the original game uses, drawn into an 8-bit
 //! indexed framebuffer like the original's 256-colour screen.
 //!
 //! The forms only use `TForm`, `TImage`, `TPanel`, `TTimer` and

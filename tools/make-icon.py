@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draws the port's icon (crates/holiday/res/icon.png and icon.ico): an
+"""Draws the port's icon (crates/vacationdestination/res/icon.png and icon.ico): an
 island with a palm tree in the sea under the sun. It's the port's own, not
 the game's. Needs Pillow.
 
@@ -11,7 +11,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 S = 1024  # drawn large, scaled down smooth
-OUT = Path(__file__).resolve().parent.parent / "crates/holiday/res"
+OUT = Path(__file__).resolve().parent.parent / "crates/vacationdestination/res"
 
 
 def draw() -> Image.Image:

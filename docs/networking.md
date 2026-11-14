@@ -8,9 +8,9 @@ browser ([below](#the-browser-build)).
 - `crates/net`: the transport trait, the WebRTC transport (matchbox),
   an in-memory transport for tests, the lockstep session and its wire
   format.
-- `crates/server`: the signaling server, `holiday-server`.
-- `crates/holiday`: the command line's options (`--host=`, `--join=`
-  and the rest, `crates/holiday/src/network.rs`). There's no UI for it
+- `crates/server`: the signaling server, `vacationdestination-server`.
+- `crates/vacationdestination`: the command line's options (`--host=`, `--join=`
+  and the rest, `crates/vacationdestination/src/network.rs`). There's no UI for it
   yet.
 
 ## Playing
@@ -25,9 +25,9 @@ when the host's world comes, the game is set up from it and plays a
 seat. If the host turns it away, a message box says why and OK quits.
 
 ```sh
-holiday-server                                   # on a machine both can reach
-holiday --host=island --signal=ws://server:3536  # the host
-holiday --join=island --signal=ws://server:3536  # each other player
+vacationdestination-server                                   # on a machine both can reach
+vacationdestination --host=island --signal=ws://server:3536  # the host
+vacationdestination --join=island --signal=ws://server:3536  # each other player
 ```
 
 | Option | |
@@ -77,12 +77,12 @@ cargo run --release -p server                           # 0.0.0.0:3536
 cargo run --release -p server -- --listen=127.0.0.1:4000
 ```
 
-The binary is `holiday-server`. The players' games connect to it over
+The binary is `vacationdestination-server`. The players' games connect to it over
 a WebSocket to find each other; once their WebRTC connections are up,
 the game's messages go between them directly (or through TURN), not
 through the server. Behind a reverse proxy with TLS, the games use
-`--signal=wss://example.org/holiday`; the server takes the room as the
-whole path, so the proxy rewrites `/holiday/ROOM` to `/ROOM`.
+`--signal=wss://example.org/vacationdestination`; the server takes the room as the
+whole path, so the proxy rewrites `/vacationdestination/ROOM` to `/ROOM`.
 
 The server is a star per room on matchbox's signaling library
 (`server::Star`): the host connects to `/<room>~host`, the clients to
@@ -108,7 +108,7 @@ coturn does both. A minimal `/etc/turnserver.conf`:
 listening-port=3478
 fingerprint
 lt-cred-mech
-user=holiday:SECRET
+user=vacationdestination:SECRET
 realm=example.org
 # The relay's ports, open in the firewall (UDP):
 min-port=49160
@@ -120,9 +120,9 @@ max-port=49200
 Open 3478 (UDP and TCP) and the relay ports. Then every player uses:
 
 ```sh
-holiday --join=island --signal=wss://example.org/holiday \
+vacationdestination --join=island --signal=wss://example.org/vacationdestination \
   --stun=stun:example.org:3478 \
-  --turn=turn:example.org:3478 --turn-user=holiday --turn-password=SECRET
+  --turn=turn:example.org:3478 --turn-user=vacationdestination --turn-password=SECRET
 ```
 
 Each player's game uses TURN only if a direct connection fails, so
@@ -259,7 +259,7 @@ dependency.
   browser's `RTCPeerConnection` there.
 - The options come from the page's query instead of the command line,
   each without its `--`, through the same parser:
-  `?host=ROOM&signal=wss://example.org/holiday&stun=stun:example.org:3478`,
+  `?host=ROOM&signal=wss://example.org/vacationdestination&stun=stun:example.org:3478`,
   `?join=ROOM&seat=3`, `?join=ROOM&rejoin=2`. `stun=` and `turn=` may
   repeat.
 - matchbox always gives the browser's `RTCPeerConnection` one ICE server,

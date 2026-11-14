@@ -1,7 +1,7 @@
 // A window, not a console, on Windows (the release build).
 #![cfg_attr(all(windows, not(debug_assertions)), windows_subsystem = "windows")]
 
-//! Holiday Island. This plays the intro's film (`sunflow.avi`), shows the
+//! VacationDestination, a port of Holiday Island. This plays the intro's film (`sunflow.avi`), shows the
 //! main form with the title picture and then the background, like the
 //! intro (`docs/startup.md`, states 400–450), and then the start menu on
 //! top (state 500). Start (after `titel.avi`, states 1111–1120, and the
@@ -32,13 +32,13 @@
 //!
 //! A saved game dropped onto the window loads, from the start menu as
 //! the load form's would and in a game after a question
-//! ([`Holiday::take_dropped`]); the browser build's file menu also saves
+//! ([`VacationDestination::take_dropped`]); the browser build's file menu also saves
 //! the game as a download (`docs/web.md`).
 //!
 //! The window's client area, divided by the UI scale, is the desktop the
 //! game lays out for, again whenever it changes (`docs/layout.md`).
 //!
-//! `holiday [--save-dir=DIR] [--soundfont=FILE.sf2] [--sound=hi|lo|off]
+//! `vacationdestination [--save-dir=DIR] [--soundfont=FILE.sf2] [--sound=hi|lo|off]
 //! [--films=hi|lo] [--no-audio] [--window-size=WxH] [--fullscreen|--windowed]
 //! [--ui-scale=N] [--lang=auto|de|en] [--original] [--enhance=KEY=on|off]
 //! [--enhancements] [--host=ROOM|--join=ROOM ...] [--help] [GAME_DIR]`
@@ -51,7 +51,7 @@
 //! `MAPS` (the tutorial), which is only read. The sound plays the waves
 //! from `SOUND` (or `SOUNDLO`, or none: `--sound`, else `SETUP.DAT`'s
 //! choice if the game's directory has one) and the music from `MUSIK`
-//! with the `SoundFont` `--soundfont` or `HOLIDAY_SOUNDFONT` names, else the
+//! with the `SoundFont` `--soundfont` or `VACATIONDESTINATION_SOUNDFONT` names, else the
 //! one `tools/get-soundfont.sh` installed or one in the usual places
 //! (`platform::audio::find_soundfont`); without
 //! one the music is silent, and without a sound device (or with
@@ -386,7 +386,7 @@ struct Game {
     net: Option<network::NetGame>,
     /// A client's network game ended, and why: the game tells the
     /// player, offers to save and goes back to the start menu
-    /// (`Holiday::net_game_over`). The host's goes on alone instead.
+    /// (`VacationDestination::net_game_over`). The host's goes on alone instead.
     net_over: Option<net::End>,
     /// Whether a client's network game is over: its world then stays as
     /// it was after the last tick it ran (no more ticks, no commands),
@@ -567,7 +567,7 @@ impl Game {
     /// session. A client whose host dropped says so on the status bar
     /// while it waits for it; one whose host came back reads the host's
     /// world again. A client whose session ended stops its world as it
-    /// stands, for the player to save (`Holiday::net_game_over`). A host
+    /// stands, for the player to save (`VacationDestination::net_game_over`). A host
     /// whose session ended plays on alone: its clients' seats go to the
     /// computers, by its own commands.
     fn net_poll(&mut self) -> bool {
@@ -1591,12 +1591,12 @@ enum AfterMessage {
     /// OK quits.
     JoinFailed,
     /// A saved game was dropped onto the window in a game (the port's):
-    /// Yes loads it in place of the game ([`Holiday::take_dropped`]).
+    /// Yes loads it in place of the game ([`VacationDestination::take_dropped`]).
     LoadDropped,
 }
 
 /// A file dropped onto the window (the port's), until the game takes it
-/// ([`Holiday::take_dropped`]).
+/// ([`VacationDestination::take_dropped`]).
 enum Dropped {
     Game(Box<SaveGame>),
     /// Not a saved game: its name.
@@ -1614,7 +1614,7 @@ enum Picture {
     Background,
 }
 
-struct Holiday {
+struct VacationDestination {
     dir: PathBuf,
     exe: Vec<u8>,
     form: Form,
@@ -1691,7 +1691,7 @@ struct Holiday {
     dropped: Option<Dropped>,
 }
 
-impl Holiday {
+impl VacationDestination {
     /// `backgroundimage` shows `picture` for the screen size: the
     /// title's or the background's of [`hintergrund::layout`], or none
     /// for other sizes (states 430, 450 and 1130). The palette, which the
@@ -2412,7 +2412,7 @@ impl Holiday {
                 self.open_message(text, DlgType::Error, &[Btn::Ok], AfterMessage::Nothing);
             }
             // `MessageDlg(…, mtConfirmation, [mbOK, mbCancel], 0)`: OK
-            // erases the game ([`Holiday::delete_game`]). // en 1040:110c
+            // erases the game ([`VacationDestination::delete_game`]). // en 1040:110c
             Some(dateimenue::Action::Delete(name)) => {
                 let text = dateimenue::delete_question(game.info.language);
                 self.open_message(
@@ -2469,7 +2469,7 @@ impl Holiday {
     }
 
     /// A file called `name` with `data` was dropped onto the window (the
-    /// port's): it waits, parsed, until [`Holiday::take_dropped`] can
+    /// port's): it waits, parsed, until [`VacationDestination::take_dropped`] can
     /// take it. A later drop replaces it.
     fn dropped(&mut self, name: &str, data: &[u8]) {
         self.dropped = Some(match SaveGame::parse(data) {
@@ -2531,7 +2531,7 @@ impl Holiday {
     /// saves `Last.map`, hides the game's forms and frees the game
     /// (en 1038:3657, de 1030:3974: the clock, the forms, the people, the
     /// computers, the news, the music closed, ...) and shows a new start
-    /// menu ([`Holiday::new_start_menu`]). The later build first waits
+    /// menu ([`VacationDestination::new_start_menu`]). The later build first waits
     /// for the CD (en 1010:35e4: until the film directory has
     /// `surfwm.avi`, `INSERT_CD` with OK to look again and Cancel to
     /// quit); the port doesn't check for a CD.
@@ -2698,7 +2698,7 @@ impl Holiday {
     /// State 1120 and on: the film stops and closes, the session takes
     /// the wave device back (10a0:254f), and state 1200 shows the
     /// progress window (`TWasNunForm`, en 1028:3b3c); the game is set up
-    /// over the next frames ([`Holiday::advance_loading`]).
+    /// over the next frames ([`VacationDestination::advance_loading`]).
     fn start_pending(&mut self) {
         {
             let mut s = self.sound.borrow_mut();
@@ -2898,9 +2898,9 @@ impl Holiday {
     }
 }
 
-impl App for Holiday {
+impl App for VacationDestination {
     fn dropped(&mut self, name: &str, data: Vec<u8>) {
-        Holiday::dropped(self, name, &data);
+        VacationDestination::dropped(self, name, &data);
     }
 
     fn update(&mut self, elapsed: Duration) {
@@ -3399,7 +3399,7 @@ fn generated_start(world: World, options: &Options) -> Start {
 
 /// What hintergrund's timer does from state 1200 to 1500 once Start is
 /// clicked and `titel.avi` is over, without the progress window
-/// (`TWasNunForm`, [`Holiday::advance_loading`]): load the scenario's map
+/// (`TWasNunForm`, [`VacationDestination::advance_loading`]): load the scenario's map
 /// or generate an island, set up the main screen and show it.
 /// // 1000:2466, en 1010:0591
 #[cfg(test)]
@@ -3453,7 +3453,7 @@ fn start_game_seeded(
 
 /// `--help`. The command line is in English only.
 const USAGE: &str = "\
-usage: holiday [OPTIONS] [GAME_DIR]
+usage: vacationdestination [OPTIONS] [GAME_DIR]
 
 GAME_DIR holds HOLIDAY.EXE, GRAFIK, DATA, the films and sounds (default:
 orig, else the one picked before, else it asks), or is the game's CD image
@@ -3733,7 +3733,7 @@ fn main() {
     std::panic::set_hook(Box::new(move |info| {
         report(info);
         if !std::io::IsTerminal::is_terminal(&std::io::stderr()) {
-            pick::error_box(&format!("Holiday Island stopped: {info}"));
+            pick::error_box(&format!("VacationDestination stopped: {info}"));
         }
     }));
     if let Err(e) = start(args(std::env::args_os().skip(1))) {
@@ -3781,15 +3781,15 @@ fn start(args: Args) -> Result<(), platform::Error> {
             .unwrap_or_else(|| dir.join("MAPS")),
         game_maps: dir.join("MAPS"),
     };
-    let mut holiday = Holiday::new(dir, saves, sound, enhance);
-    holiday.settings_file.clone_from(&window.settings_file);
-    holiday.command_line = command_line;
+    let mut destination = VacationDestination::new(dir, saves, sound, enhance);
+    destination.settings_file.clone_from(&window.settings_file);
+    destination.command_line = command_line;
     // A client connects at once and waits for the host's world.
     if let Some(args) = net.as_ref().filter(|a| a.role == network::Role::Join) {
         match args.connect() {
             Ok(session) => {
                 eprintln!("network: waiting for the host of room {} on {}", args.room, args.signal);
-                holiday.joining = Some(session);
+                destination.joining = Some(session);
             }
             Err(e) => {
                 eprintln!("network: can't join: {e}");
@@ -3797,16 +3797,16 @@ fn start(args: Args) -> Result<(), platform::Error> {
             }
         }
     }
-    holiday.net_args = net;
-    holiday.start_intro();
-    platform::run("Holiday Island", window, holiday)
+    destination.net_args = net;
+    destination.start_intro();
+    platform::run("VacationDestination", window, destination)
 }
 
-impl Holiday {
+impl VacationDestination {
     /// The game before the intro: `THintergrund` from its DFM, shown
     /// maximized over an 800×600 desktop until the platform says how big
     /// the window is ([`App::resize`]), and the start menu, hidden.
-    fn new(dir: PathBuf, saves: Saves, sound: sound::Shared, enhance: Config) -> Holiday {
+    fn new(dir: PathBuf, saves: Saves, sound: sound::Shared, enhance: Config) -> VacationDestination {
         let exe = read(&dir, "HOLIDAY.EXE");
         let mut form = load_form(&exe, "THINTERGRUND");
         // What states 110 and 400 do to the form and its image.
@@ -3822,7 +3822,7 @@ impl Holiday {
         );
         let font = font(&dir);
         let message_bitmaps = bitmaps(&dir, &msgdlg::BITMAP_FILES);
-        let mut holiday = Holiday {
+        let mut destination = VacationDestination {
             dir,
             exe,
             form,
@@ -3863,11 +3863,11 @@ impl Holiday {
             join_loading: false,
             dropped: None,
         };
-        holiday.start.menu.enhance = enhance.view;
-        holiday.sound.borrow_mut().set_view_enhancements(enhance.view);
+        destination.start.menu.enhance = enhance.view;
+        destination.sound.borrow_mut().set_view_enhancements(enhance.view);
         let (w, h) = platform::DEFAULT_DESKTOP;
-        holiday.layout(i32::try_from(w).unwrap_or(800), i32::try_from(h).unwrap_or(600));
-        holiday
+        destination.layout(i32::try_from(w).unwrap_or(800), i32::try_from(h).unwrap_or(600));
+        destination
     }
 
     /// State 100: the `WaveMix` session gives up the wave device until the
@@ -4287,13 +4287,13 @@ mod tests {
     /// The whole program on a `width` × `height` desktop, past the intro,
     /// with scenario 1 started and the TV (opened by a message), the money
     /// menu, the overview map and the compass open.
-    fn holiday_in_a_game(dir: &Path, (width, height): (i32, i32), enhance: Config) -> Holiday {
+    fn destination_in_a_game(dir: &Path, (width, height): (i32, i32), enhance: Config) -> VacationDestination {
         let sound = Sound::new(dir, setup::Sound::Hi, platform::audio::Audio::silent()).shared();
         let saves = Saves {
-            dir: std::env::temp_dir().join("holiday-layout-test-saves"),
+            dir: std::env::temp_dir().join("vacationdestination-layout-test-saves"),
             game_maps: dir.join("MAPS"),
         };
-        let mut h = Holiday::new(dir.to_path_buf(), saves, sound, enhance);
+        let mut h = VacationDestination::new(dir.to_path_buf(), saves, sound, enhance);
         h.resize(u32::try_from(width).unwrap(), u32::try_from(height).unwrap());
         h.intro_step(Duration::ZERO, MENU_AT);
         let settings = Settings {
@@ -4369,7 +4369,7 @@ mod tests {
     }
 
     /// Writes the framebuffer as `name.ppm` into `HOLIDAY_PPM`, if set.
-    fn write_ppm(h: &Holiday, name: &str) {
+    fn write_ppm(h: &VacationDestination, name: &str) {
         let Some(out) = std::env::var_os("HOLIDAY_PPM") else {
             return;
         };
@@ -4395,7 +4395,7 @@ mod tests {
             ((1024, 768), (80, 61), true),
             ((1366, 700), (80, 61), false),
         ] {
-            let h = holiday_in_a_game(&dir, size, Config::ORIGINAL);
+            let h = destination_in_a_game(&dir, size, Config::ORIGINAL);
             assert_eq!(h.size, size, "{size:?} is laid out for as it is");
             let game = h.game.as_ref().unwrap();
             assert_eq!((game.screen.left, game.screen.top), main_at, "the file's");
@@ -4418,10 +4418,10 @@ mod tests {
     #[test]
     fn small_and_snapped_desktops() {
         let Some(dir) = game_dir() else { return };
-        let h = holiday_in_a_game(&dir, (500, 400), Config::ORIGINAL);
+        let h = destination_in_a_game(&dir, (500, 400), Config::ORIGINAL);
         assert_eq!((h.desktop, h.size), ((640, 480), (640, 480)));
         assert_eq!((h.screen.width, h.screen.height), (640, 480));
-        let h = holiday_in_a_game(&dir, (790, 590), Config::ORIGINAL);
+        let h = destination_in_a_game(&dir, (790, 590), Config::ORIGINAL);
         assert_eq!((h.desktop, h.size), ((790, 590), (800, 600)));
         // BUG(original): laid out for 800×600 on 790×590, the compass's right edge is off the screen.
         assert_eq!(h.game.as_ref().unwrap().forms.compass.bounds().right, 800);
@@ -4434,7 +4434,7 @@ mod tests {
     #[test]
     fn resize_mid_game() {
         let Some(dir) = game_dir() else { return };
-        let mut h = holiday_in_a_game(&dir, (800, 600), Config::ORIGINAL);
+        let mut h = destination_in_a_game(&dir, (800, 600), Config::ORIGINAL);
         {
             let game = h.game.as_mut().unwrap();
             game.screen.scroll(5, -3, &game.world, &game.tiles);
@@ -4485,7 +4485,7 @@ mod tests {
             // every form (`big_map`).
             let mut config = if enhanced { Config::default() } else { Config::ORIGINAL };
             config.view.set(enhance::Enhancement::BigMap, false);
-            let mut h = holiday_in_a_game(&dir, (800, 600), config);
+            let mut h = destination_in_a_game(&dir, (800, 600), config);
             let game = h.game.as_mut().unwrap();
             let tv = game.forms.tv.bounds();
             let tv_mid = (i32::midpoint(tv.left, tv.right), i32::midpoint(tv.top, tv.bottom));
@@ -4579,8 +4579,8 @@ mod tests {
 
     /// Writes the framebuffer as `name.png` into `HOLIDAY_PNG`, if set:
     /// an uncompressed PNG (stored deflate blocks), which needs no crate.
-    fn write_png(holiday: &Holiday, name: &str) {
-        write_surface_png(&holiday.screen, &holiday.rgb, name);
+    fn write_png(destination: &VacationDestination, name: &str) {
+        write_surface_png(&destination.screen, &destination.rgb, name);
     }
 
     /// [`write_png`] for `screen` with the colours `rgb`.
@@ -4642,8 +4642,8 @@ mod tests {
         for &e in E::ALL {
             all.view.set(e, e != E::BigMap);
         }
-        let mut o_h = holiday_in_a_game(&dir, SIZE, Config::ORIGINAL);
-        let mut f_h = holiday_in_a_game(&dir, SIZE, all);
+        let mut o_h = destination_in_a_game(&dir, SIZE, Config::ORIGINAL);
+        let mut f_h = destination_in_a_game(&dir, SIZE, all);
         let o = o_h.game.as_mut().unwrap();
         let f = f_h.game.as_mut().unwrap();
         let main = Hauptschirm::position(SIZE.0, SIZE.1);
@@ -4762,14 +4762,14 @@ mod tests {
     #[test]
     fn desktop_background() {
         let Some(dir) = game_dir() else { return };
-        let picture = |h: &Holiday| {
+        let picture = |h: &VacationDestination| {
             let c = h.form.components.iter().find(|c| c.name == b"backgroundimage").unwrap();
             let shown = matches!(&c.kind, Kind::Image { picture: Some(_) });
             (shown, c.bounds)
         };
         let size = (1366, 700);
-        let o = holiday_in_a_game(&dir, size, Config::ORIGINAL);
-        let f = holiday_in_a_game(&dir, size, only(enhance::Enhancement::DesktopBackground));
+        let o = destination_in_a_game(&dir, size, Config::ORIGINAL);
+        let f = destination_in_a_game(&dir, size, only(enhance::Enhancement::DesktopBackground));
         write_png(&o, "ui-desktop_background-original");
         write_png(&f, "ui-desktop_background-fixed");
         // 800×600's background, the biggest that fits, centred.
@@ -4802,8 +4802,8 @@ mod tests {
     #[test]
     fn minimize_widget() {
         let Some(dir) = game_dir() else { return };
-        let mut holiday = holiday_in_a_game(&dir, (800, 600), Config::ORIGINAL);
-        let game = holiday.game.as_mut().unwrap();
+        let mut destination = destination_in_a_game(&dir, (800, 600), Config::ORIGINAL);
+        let game = destination.game.as_mut().unwrap();
         let main = game.screen.bounds();
         let (x, y) = (main.left + 630, main.top + 5);
         for (button, shift) in [(Button::Right, ShiftState::RIGHT), (Button::Left, ShiftState::LEFT)] {
@@ -4814,8 +4814,8 @@ mod tests {
             assert!(!game.screen.title_button_pressed(TitleButton::Minimize));
             assert_eq!(game.minimize, button == Button::Left);
         }
-        assert!(holiday.take_minimize());
-        assert!(!holiday.take_minimize());
+        assert!(destination.take_minimize());
+        assert!(!destination.take_minimize());
     }
 
     /// `overview_frame`: the original's view turned a quarter gets a frame
@@ -4828,7 +4828,7 @@ mod tests {
         let mut on = Config::ORIGINAL;
         on.view.set(enhance::Enhancement::OverviewFrame, true);
         for (config, fixed) in [(Config::ORIGINAL, false), (on, true)] {
-            let mut h = holiday_in_a_game(&dir, (800, 600), config);
+            let mut h = destination_in_a_game(&dir, (800, 600), config);
             let g = h.game.as_mut().unwrap();
             for rotation in 0..4 {
                 g.screen.set_view(rotation, &g.world, &g.tiles);
@@ -4857,8 +4857,8 @@ mod tests {
     fn big_map() {
         let Some(dir) = game_dir() else { return };
         for size in [(1024, 768), (1280, 1024)] {
-            let mut off_h = holiday_in_a_game(&dir, size, Config::ORIGINAL);
-            let mut on_h = holiday_in_a_game(&dir, size, big_map_only());
+            let mut off_h = destination_in_a_game(&dir, size, Config::ORIGINAL);
+            let mut on_h = destination_in_a_game(&dir, size, big_map_only());
             write_png(&off_h, &format!("bigmap-{}x{}-off", size.0, size.1));
             write_png(&on_h, &format!("bigmap-{}x{}-on", size.0, size.1));
             let off = off_h.game.as_mut().unwrap();
@@ -5074,7 +5074,7 @@ mod tests {
     #[test]
     fn big_map_resize() {
         let Some(dir) = game_dir() else { return };
-        let mut h = holiday_in_a_game(&dir, (1024, 768), big_map_only());
+        let mut h = destination_in_a_game(&dir, (1024, 768), big_map_only());
         let game = h.game.as_ref().unwrap();
         let world = game.world.clone();
         let scroll = game.screen.scroll_position();
@@ -5107,7 +5107,7 @@ mod tests {
     #[test]
     fn dragging_the_main_screen() {
         let Some(dir) = game_dir() else { return };
-        let mut h = holiday_in_a_game(&dir, (1024, 768), Config::ORIGINAL);
+        let mut h = destination_in_a_game(&dir, (1024, 768), Config::ORIGINAL);
         let game = h.game.as_mut().unwrap();
         let (x, y) = (game.screen.left + 100, game.screen.top + 5);
         let down = Input::MouseDown {
@@ -5202,8 +5202,8 @@ mod tests {
     fn no_main_title() {
         let Some(dir) = game_dir() else { return };
         for size in [(800, 600), (1024, 768), (1280, 1024), (1366, 700)] {
-            let mut titled_h = holiday_in_a_game(&dir, size, big_map_only());
-            let mut h = holiday_in_a_game(&dir, size, no_title_only());
+            let mut titled_h = destination_in_a_game(&dir, size, big_map_only());
+            let mut h = destination_in_a_game(&dir, size, no_title_only());
             write_png(&h, &format!("notitle-{}x{}-forms", size.0, size.1));
             let titled = titled_h.game.as_mut().unwrap();
             let game = h.game.as_mut().unwrap();
@@ -5323,7 +5323,7 @@ mod tests {
         let Some(dir) = game_dir() else { return };
         for (size, config) in [((800, 600), Config::ORIGINAL), ((1024, 768), Config::default())] {
             let fixed = config.view.has(enhance::Enhancement::ScrollBars);
-            let mut h = holiday_in_a_game(&dir, size, config);
+            let mut h = destination_in_a_game(&dir, size, config);
             let game = h.game.as_mut().unwrap();
             let main = game.screen.bounds();
             let ns = game.screen.rects()[4].1.offset(main.left, main.top);
@@ -5475,7 +5475,7 @@ mod tests {
         let Some(dir) = game_dir() else { return };
         for config in [Config::default(), Config::ORIGINAL] {
             let on = config.view.has(enhance::Enhancement::MouseWheel);
-            let mut h = holiday_in_a_game(&dir, (1024, 768), config);
+            let mut h = destination_in_a_game(&dir, (1024, 768), config);
             let game = h.game.as_mut().unwrap();
             game.screen.set_view(0, &game.world, &game.tiles);
             game.screen.set_scroll(240, 238, &game.world, &game.tiles);
@@ -5484,8 +5484,9 @@ mod tests {
             let at = (bild.left + 20, bild.bottom - 20);
             game.sync_stack();
             assert_eq!(game.window_at(at.0, at.1), Win::Main);
-            let wheel = |h: &mut Holiday, (x, y): (i32, i32), dx, dy| h.input(Input::Wheel { x, y, dx, dy });
-            let pos = |h: &Holiday| h.game.as_ref().unwrap().screen.scroll_position();
+            let wheel =
+                |h: &mut VacationDestination, (x, y): (i32, i32), dx, dy| h.input(Input::Wheel { x, y, dx, dy });
+            let pos = |h: &VacationDestination| h.game.as_ref().unwrap().screen.scroll_position();
             wheel(&mut h, at, 0, 1);
             assert_eq!(pos(&h), if on { (240, 236) } else { (240, 238) });
             wheel(&mut h, at, 0, -3);
@@ -5540,22 +5541,22 @@ mod tests {
         let Some(dir) = game_dir() else { return };
         for config in [Config::ORIGINAL, Config::default()] {
             let fixed = config.view.has(enhance::Enhancement::ScrollBars);
-            let mut h = holiday_in_a_game(&dir, (1024, 768), config);
-            let press = |h: &mut Holiday, (x, y): (i32, i32)| {
+            let mut h = destination_in_a_game(&dir, (1024, 768), config);
+            let press = |h: &mut VacationDestination, (x, y): (i32, i32)| {
                 h.input(Input::MouseDown {
                     x,
                     y,
                     button: Button::Left,
                 });
             };
-            let release = |h: &mut Holiday, (x, y): (i32, i32)| {
+            let release = |h: &mut VacationDestination, (x, y): (i32, i32)| {
                 h.input(Input::MouseUp {
                     x,
                     y,
                     button: Button::Left,
                 });
             };
-            let hold = |h: &mut Holiday, ms: u64| h.update(Duration::from_millis(ms));
+            let hold = |h: &mut VacationDestination, ms: u64| h.update(Duration::from_millis(ms));
             // The overview map's down arrow: 5 at once, 5 every 25 ms.
             let game = h.game.as_mut().unwrap();
             // The TV lies over the overview's bar; out of the way.
@@ -5628,7 +5629,7 @@ mod tests {
     }
 
     /// A press and release of the left button at `x`, `y` on the screen.
-    fn click_at(h: &mut Holiday, (x, y): (i32, i32)) {
+    fn click_at(h: &mut VacationDestination, (x, y): (i32, i32)) {
         h.input(Input::MouseDown {
             x,
             y,
@@ -5642,7 +5643,7 @@ mod tests {
     }
 
     /// The options open and "INFO" pressed with its key, Space.
-    fn press_info(h: &mut Holiday) {
+    fn press_info(h: &mut VacationDestination) {
         h.game.as_mut().unwrap().click_button(2);
         assert!(h.game.as_ref().unwrap().forms.options.visible);
         h.input(Input::KeyDown(0x20));
@@ -5684,7 +5685,7 @@ mod tests {
             let language = setting.language(land);
             // The start menu, on its scenario page with scenario 12 (the
             // later build's, on the English folder) ticked.
-            let mut h = fixed_holiday_with(&dir, config);
+            let mut h = fixed_destination_with(&dir, config);
             let menu = &mut h.start.menu;
             let _ = menu.mouse_down(0x12 + 4, 0x132 + 4, ShiftState::LEFT);
             let _ = menu.mouse_up(0x12 + 4, 0x132 + 4, true);
@@ -5696,7 +5697,7 @@ mod tests {
             h.repaint();
             write_png(&h, &format!("langfiles-{tag}-start"));
 
-            let mut h = holiday_in_a_game(&dir, SIZE, config);
+            let mut h = destination_in_a_game(&dir, SIZE, config);
             let game = h.game.as_mut().unwrap();
             assert_eq!(game.info.language, language);
             // A new game's world is in the language it was created in.
@@ -5785,7 +5786,7 @@ mod tests {
     fn info_opens_the_credits_or_the_enhancements() {
         let Some(dir) = game_dir() else { return };
         // The original.
-        let mut h = holiday_in_a_game(&dir, SIZE, Config::ORIGINAL);
+        let mut h = destination_in_a_game(&dir, SIZE, Config::ORIGINAL);
         press_info(&mut h);
         let game = h.game.as_mut().unwrap();
         assert!(game.forms.credits.visible && !game.forms.enhance.visible);
@@ -5807,7 +5808,7 @@ mod tests {
         assert_eq!(game.window_at(middle(options).0, middle(options).1), Win::Options);
 
         // Every enhancement on, `big_map` at a bigger size.
-        let mut h = holiday_in_a_game(&dir, (1024, 768), Config::default());
+        let mut h = destination_in_a_game(&dir, (1024, 768), Config::default());
         press_info(&mut h);
         let game = h.game.as_mut().unwrap();
         assert!(game.forms.enhance.visible && !game.forms.credits.visible);
@@ -5840,7 +5841,7 @@ mod tests {
         // The original's stacking, without `big_map`, keeps them on top too.
         let mut config = Config::ORIGINAL;
         config.view.set(enhance::Enhancement::EnhancementsScreen, true);
-        let mut h = holiday_in_a_game(&dir, (640, 480), config);
+        let mut h = destination_in_a_game(&dir, (640, 480), config);
         press_info(&mut h);
         let game = h.game.as_mut().unwrap();
         assert!(game.forms.enhance.visible);
@@ -5869,19 +5870,19 @@ mod tests {
     #[allow(clippy::too_many_lines)] // One game, step by step.
     fn switching_enhancements_in_a_game() {
         let Some(dir) = game_dir() else { return };
-        let tmp = std::env::temp_dir().join(format!("holiday-enhance-screen-{}", std::process::id()));
+        let tmp = std::env::temp_dir().join(format!("vacationdestination-enhance-screen-{}", std::process::id()));
         std::fs::create_dir_all(&tmp).unwrap();
         let ini = tmp.join("settings.ini");
         std::fs::write(&ini, "# mine\nwindow_width=1024\nenhance.music=off\n").unwrap();
         let config = enhance_config(Some(&ini), false, &[]);
         assert!(!config.view.has(enhance::Enhancement::Music));
-        let mut h = holiday_in_a_game(&dir, (1024, 768), config);
+        let mut h = destination_in_a_game(&dir, (1024, 768), config);
         h.settings_file = Some(ini.clone());
         h.command_line = true;
         h.game.as_mut().unwrap().forms.enhance_notes = h.enhance_notes();
         press_info(&mut h);
         let list = h.game.as_ref().unwrap().forms.enhance.bounds();
-        let at = |h: &Holiday, key: &str| {
+        let at = |h: &VacationDestination, key: &str| {
             let (x, y) = h.game.as_ref().unwrap().forms.enhance.row_of(key).unwrap();
             (list.left + x, list.top + y)
         };
@@ -5983,7 +5984,7 @@ mod tests {
     /// that isn't a language.
     #[test]
     fn language_from_settings() {
-        let tmp = std::env::temp_dir().join(format!("holiday-language-{}", std::process::id()));
+        let tmp = std::env::temp_dir().join(format!("vacationdestination-language-{}", std::process::id()));
         std::fs::create_dir_all(&tmp).unwrap();
         let ini = tmp.join("settings.ini");
         assert_eq!(language_setting(None), lang::Setting::Auto);
@@ -6037,26 +6038,26 @@ mod tests {
         .collect()
     }
 
-    /// A game with the forms `holiday_in_a_game` opens closed again, its
+    /// A game with the forms `destination_in_a_game` opens closed again, its
     /// saves in a directory of its own.
-    fn quiet_game(dir: &Path, setting: lang::Setting, saves: &str) -> Holiday {
+    fn quiet_game(dir: &Path, setting: lang::Setting, saves: &str) -> VacationDestination {
         let mut config = Config::default();
         config.view.set(enhance::Enhancement::BigMap, false);
         config.view.set(enhance::Enhancement::WindowStacking, false);
         config.language = setting;
-        let mut h = holiday_in_a_game(dir, SIZE, config);
+        let mut h = destination_in_a_game(dir, SIZE, config);
         let game = h.game.as_mut().unwrap();
         for button in [3, 4, 5] {
             game.click_button(button);
         }
         let _ = game.update(Duration::ZERO);
-        h.saves.dir = std::env::temp_dir().join(format!("holiday-{saves}-{}", std::process::id()));
+        h.saves.dir = std::env::temp_dir().join(format!("vacationdestination-{saves}-{}", std::process::id()));
         std::fs::create_dir_all(&h.saves.dir).unwrap();
         h.repaint();
         h
     }
 
-    fn key(h: &mut Holiday, key: u16) {
+    fn key(h: &mut VacationDestination, key: u16) {
         h.input(Input::KeyDown(key));
         h.input(Input::KeyUp(key));
     }
@@ -6078,7 +6079,7 @@ mod tests {
         key(&mut h, 0x0d);
         assert!(h.message.is_none() && h.dropped.is_none());
         let map = h.game.as_ref().unwrap().map().to_bytes();
-        let loads = |h: &Holiday| {
+        let loads = |h: &VacationDestination| {
             h.game
                 .as_ref()
                 .unwrap()
@@ -6251,20 +6252,20 @@ mod tests {
         for (dir, setting, tag) in folders() {
             let sound = Sound::new(&dir, setup::Sound::Hi, platform::audio::Audio::silent()).shared();
             let saves = Saves {
-                dir: std::env::temp_dir().join("holiday-progress-test-saves"),
+                dir: std::env::temp_dir().join("vacationdestination-progress-test-saves"),
                 game_maps: dir.join("MAPS"),
             };
             let config = Config {
                 language: setting,
                 ..Config::default()
             };
-            let mut h = Holiday::new(dir.clone(), saves, sound, config);
+            let mut h = VacationDestination::new(dir.clone(), saves, sound, config);
             h.resize(800, 600);
             h.intro_step(Duration::ZERO, MENU_AT);
             h.start.hide();
             h.pending = Some(Pending::Start { scenario: false });
             h.start_pending();
-            let form = |h: &Holiday| h.loading.as_ref().map(|l| (l.form.text().to_vec(), l.form.percent()));
+            let form = |h: &VacationDestination| h.loading.as_ref().map(|l| (l.form.text().to_vec(), l.form.percent()));
             assert_eq!(form(&h), Some((Vec::new(), 0)), "state 1200");
             h.update(Duration::ZERO);
             let texts = wasnun_texts(h.language());
@@ -6330,18 +6331,18 @@ mod tests {
     /// start with that menu. With `HOLIDAY_PNG` set, the CD question goes
     /// there as `step4-insert-cd-<tag>.png`.
     /// A program on `dir` past the intro, its games' `RandSeed` fixed.
-    fn fixed_holiday(dir: &Path) -> Holiday {
-        fixed_holiday_with(dir, Config::default())
+    fn fixed_destination(dir: &Path) -> VacationDestination {
+        fixed_destination_with(dir, Config::default())
     }
 
-    /// [`fixed_holiday`] with the player's settings `config`.
-    fn fixed_holiday_with(dir: &Path, config: Config) -> Holiday {
+    /// [`fixed_destination`] with the player's settings `config`.
+    fn fixed_destination_with(dir: &Path, config: Config) -> VacationDestination {
         let sound = Sound::new(dir, setup::Sound::Hi, platform::audio::Audio::silent()).shared();
         let saves = Saves {
-            dir: std::env::temp_dir().join(format!("holiday-back-test-{}", std::process::id())),
+            dir: std::env::temp_dir().join(format!("vacationdestination-back-test-{}", std::process::id())),
             game_maps: dir.join("MAPS"),
         };
-        let mut h = Holiday::new(dir.to_path_buf(), saves, sound, config);
+        let mut h = VacationDestination::new(dir.to_path_buf(), saves, sound, config);
         h.seed = || 0x1996_0611;
         h.resize(800, 600);
         h.intro_step(Duration::ZERO, MENU_AT);
@@ -6351,8 +6352,8 @@ mod tests {
     #[test]
     fn back_to_the_start_menu_starts_clean() {
         let Some(dir) = game_dir() else { return };
-        let new = || fixed_holiday(&dir);
-        let start = |h: &mut Holiday| {
+        let new = || fixed_destination(&dir);
+        let start = |h: &mut VacationDestination| {
             h.respond(startform::Response {
                 action: Some(Action::Start { scenario: false }),
                 ..startform::Response::default()

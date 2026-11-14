@@ -1,4 +1,4 @@
-# Holiday Island: the strings in English that aren't in a TEXTE\ or
+# VacationDestination: the strings in English that aren't in a TEXTE\ or
 # UPGRADE\ file (lang/README.md). UTF-8; the port shows them in the
 # game's Windows-1252 font. Every key here is in every language's
 # strings.toml.
@@ -108,7 +108,7 @@ net_host_dropped = "The connection to the host dropped. Waiting for it to come b
 # the game as a download, and a game dropped onto the window.
 download = "Download"
 drop_load_question = "Load the game dropped onto the window? The game in progress is lost unless you saved it."
-drop_not_a_game = "That file isn't a saved game of Holiday Island:"
+drop_not_a_game = "That file isn't a saved VacationDestination game:"
 
 # The enhancements' short names and one-line descriptions, by their keys
 # (crate::enhance).
