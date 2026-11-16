@@ -182,7 +182,7 @@ impl Transport for MatchboxTransport {
         }
         for (id, packet) in messages {
             let peer = self.ours(id);
-            out.push(TransportEvent::Message(peer, packet.into_vec()));
+            out.push(TransportEvent::Message(peer, packet.to_vec()));
         }
         let ended = self.done.as_ref().and_then(|d| match d.try_recv() {
             Ok(why) => Some(why),
@@ -200,7 +200,7 @@ impl Transport for MatchboxTransport {
         if let (Some(socket), Some(&id)) = (&mut self.socket, self.ids.get(&peer))
             && let Ok(channel) = socket.get_channel_mut(0)
         {
-            let _ = channel.try_send(data.into(), id);
+            let _ = channel.try_send(data.to_vec().into(), id);
         }
     }
 
